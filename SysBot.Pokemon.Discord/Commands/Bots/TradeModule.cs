@@ -28,7 +28,7 @@ namespace SysBot.Pokemon.Discord
                 x.Value = msg;
                 x.IsInline = false;
             });
-            await ReplyAsync("These are the users who are currently waiting:", embed: embed.Build()).ConfigureAwait(false);
+            await ReplyAsync("Estos son los usuarios que estan actualmente esperando:", embed: embed.Build()).ConfigureAwait(false);
         }
 
         [Command("trade")]
@@ -198,7 +198,7 @@ namespace SysBot.Pokemon.Discord
             var la = new LegalityAnalysis(pk);
             if (!la.Valid)
             {
-                await ReplyAsync($"{typeof(T).Name} attachment is not legal, and cannot be traded!").ConfigureAwait(false);
+                await ReplyAsync($"{typeof(T).Name} adjuntado no es legal, no puedo intercambiarlo!").ConfigureAwait(false);
                 return;
             }
 

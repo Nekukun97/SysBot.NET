@@ -31,7 +31,7 @@ namespace SysBot.Pokemon.Discord
             var pkm = EntityFormat.GetFromBytes(buffer, prefer);
             if (pkm == null)
             {
-                result.ErrorMessage = $"{result.SanitizedFileName}: Invalid pkm attachment.";
+                result.ErrorMessage = $"{result.SanitizedFileName}: El pkm adjunto es invalido.";
                 return result;
             }
 

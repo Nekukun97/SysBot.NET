@@ -33,10 +33,10 @@ namespace SysBot.Pokemon.Discord
 
             bool canQueue = SysCordSettings.HubConfig.Queues.CanQueue;
             if (!canQueue)
-                return Task.FromResult(PreconditionResult.FromError("Sorry, I am not currently accepting queue requests!"));
+                return Task.FromResult(PreconditionResult.FromError("Lo siento, No estoy aceptando mas solicitudes!"));
 
             if (!mgr.GetHasRoleAccess(_name, roles.Select(z => z.Name)))
-                return Task.FromResult(PreconditionResult.FromError("You do not have the required role to run this command."));
+                return Task.FromResult(PreconditionResult.FromError("No tienes el rol necesario para ejecutar este comando."));
 
             return Task.FromResult(PreconditionResult.FromSuccess());
         }

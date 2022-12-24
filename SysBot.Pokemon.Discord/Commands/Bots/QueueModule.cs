@@ -85,8 +85,8 @@ namespace SysBot.Pokemon.Discord
         {
             var state = Info.ToggleQueue();
             var msg = state
-                ? "Users are now able to join the trade queue."
-                : "Changed queue settings: **Users CANNOT join the queue until it is turned back on.**";
+                ? "@here Ahora puedes enviar solicitudes."
+                : "Changed queue settings: **@here ya NO PUEDES enviar mas solicitudes.**";
 
             await Context.Channel.EchoAndReply(msg).ConfigureAwait(false);
         }
@@ -140,7 +140,7 @@ namespace SysBot.Pokemon.Discord
                 QueueResultRemove.CurrentlyProcessing => "Looks like you're currently being processed! Did not remove from all queues.",
                 QueueResultRemove.CurrentlyProcessingRemoved => "Looks like you're currently being processed!",
                 QueueResultRemove.Removed => "Removed you from the queue.",
-                _ => "Sorry, you are not currently in the queue.",
+                _ => "Lo siento, no estas actualmente en la lista.",
             };
         }
     }

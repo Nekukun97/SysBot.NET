@@ -28,7 +28,7 @@ namespace SysBot.Pokemon.Discord
                 return Task.FromResult(PreconditionResult.FromSuccess());
 
             // Since it wasn't, fail
-            return Task.FromResult(PreconditionResult.FromError($"You must have a role named {_name} to run this command."));
+            return Task.FromResult(PreconditionResult.FromError($"Debes tener un rol llamado {_name} para ejecutar este comando."));
         }
     }
 }
