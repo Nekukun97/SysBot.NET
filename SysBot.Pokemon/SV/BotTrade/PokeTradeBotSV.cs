@@ -211,11 +211,11 @@ namespace SysBot.Pokemon
             {
                 detail.IsRetry = true;
                 Hub.Queues.Enqueue(type, detail, Math.Min(priority, PokeTradePriorities.Tier2));
-                detail.SendNotification(this, "Oops! Something happened. I'll requeue you for another attempt.");
+                detail.SendNotification(this, "Vaya! Ha ocurrido algo. Te pondre en cola para otro intento.");
             }
             else
             {
-                detail.SendNotification(this, $"Oops! Something happened. Canceling the trade: {result}.");
+                detail.SendNotification(this, $"Vaya! Ha ocurrido algo. Cancelando el intercambio: {result}.");
                 detail.TradeCanceled(this, result);
             }
         }
@@ -243,7 +243,7 @@ namespace SysBot.Pokemon
                 await SetBoxPokemonAbsolute(BoxStartOffset, toSend, token, sav).ConfigureAwait(false);
 
             // Assumes we're freshly in the Portal and the cursor is over Link Trade.
-            Log("Selecting Link Trade.");
+            Log("Seleccionando Intercambio en Conexion.");
 
             await Click(A, 1_500, token).ConfigureAwait(false);
             // Make sure we clear any Link Codes if we're not in Distribution with fixed code, and it wasn't entered last round.
@@ -258,7 +258,7 @@ namespace SysBot.Pokemon
                 await Task.Delay(Hub.Config.Timings.ExtraTimeOpenCodeEntry, token).ConfigureAwait(false);
 
                 var code = poke.Code;
-                Log($"Entering Link Trade code: {code:0000 0000}...");
+                Log($"Ingresando codigo de Intercambio en Conexion: {code:0000 0000}...");
                 await EnterLinkCode(code, Hub.Config, token).ConfigureAwait(false);
 
                 await Click(PLUS, 3_000, token).ConfigureAwait(false);
@@ -332,7 +332,7 @@ namespace SysBot.Pokemon
                 return partnerCheck;
             }
 
-            poke.SendNotification(this, $"Found Link Trade partner: {tradePartner.TrainerName}. Waiting for a Pokémon...");
+            poke.SendNotification(this, $"Intercambio en Conexion encontrado: {tradePartner.TrainerName}. Esperando el Pokémon...");
 
             if (poke.Type == PokeTradeType.Dump)
             {

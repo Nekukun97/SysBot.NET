@@ -15,7 +15,7 @@ namespace SysBot.Pokemon.Discord
         {
             if ((uint)code > MaxTradeCode)
             {
-                await context.Channel.SendMessageAsync("El codigo del trade debe ser 00000000-99999999!").ConfigureAwait(false);
+                await context.Channel.SendMessageAsync("El codigo del intercambio debe ser 00000000-99999999!").ConfigureAwait(false);
                 return;
             }
 
@@ -30,7 +30,7 @@ namespace SysBot.Pokemon.Discord
                 // Notify in channel
                 await context.Channel.SendMessageAsync(msg).ConfigureAwait(false);
                 // Notify in PM to mirror what is said in the channel.
-                await trader.SendMessageAsync($"{msg}\nTu codigo del trade es **{code:0000 0000}**.").ConfigureAwait(false);
+                await trader.SendMessageAsync($"{msg}\nTu codigo del intercambio es **{code:0000 0000}**.").ConfigureAwait(false);
 
                 // Clean Up
                 if (result)
@@ -81,18 +81,18 @@ namespace SysBot.Pokemon.Discord
 
             var ticketID = "";
             if (TradeStartModule<T>.IsStartChannel(context.Channel.Id))
-                ticketID = $", unique ID: {detail.ID}";
+                ticketID = $", ID unico: {detail.ID}";
 
             var pokeName = "";
             if (t == PokeTradeType.Specific && pk.Species != 0)
-                pokeName = $" Receiving: {(Species)pk.Species}.";
-            msg = $"{user.Mention} - Agregado a la {type} lista{ticketID}. Posicion actual: {position.Position}.{pokeName}";
+                pokeName = $" Recibiendo: {(Species)pk.Species}.";
+            msg = $"{user.Mention} - Agregado a la lista {type} {ticketID}. Posicion actual: {position.Position}.{pokeName}";
 
             var botct = Info.Hub.Bots.Count;
             if (position.Position > botct)
             {
                 var eta = Info.Hub.Config.Queues.EstimateDelay(position.Position, botct);
-                msg += $" Estimado: {eta:F1} minutos.";
+                msg += $" Tiempo Estimado: {eta:F1} minutos.";
             }
             return true;
         }

@@ -77,7 +77,7 @@ namespace SysBot.Pokemon
             {
                 var queue = Hub.Queues.GetQueue(t);
                 if (queue.Count == 0)
-                    return "Nobody in queue.";
+                    return "No hay nadie en la lista.";
                 return queue.Summary();
             }
         }
@@ -169,7 +169,7 @@ namespace SysBot.Pokemon
         {
             lock (_sync)
             {
-                LogUtil.LogInfo($"Removing {detail.Trade.Trainer.TrainerName}", nameof(TradeQueueInfo<T>));
+                LogUtil.LogInfo($"Removiendo a {detail.Trade.Trainer.TrainerName}", nameof(TradeQueueInfo<T>));
                 return UsersInQueue.Remove(detail);
             }
         }

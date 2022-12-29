@@ -28,10 +28,10 @@ namespace SysBot.Base
                 return;
             }
 
-            Log("Connecting to device...");
+            Log("Conectando Switch...");
             Connection.Connect(Info.IP, Info.Port);
             Connected = true;
-            Log("Connected!");
+            Log("Conectado!");
             Label = Name;
         }
 
@@ -42,24 +42,24 @@ namespace SysBot.Base
                 Disconnect();
 
             InitializeSocket();
-            Log("Connecting to device...");
+            Log("Conectando Switch...");
             var address = Dns.GetHostAddresses(ip);
             foreach (IPAddress adr in address)
             {
                 IPEndPoint ep = new(adr, Info.Port);
                 Connection.BeginConnect(ep, ConnectCallback, Connection);
                 Connected = true;
-                Log("Connected!");
+                Log("Conectado!");
             }
         }
 
         public override void Disconnect()
         {
-            Log("Disconnecting from device...");
+            Log("Desconectando Switch...");
             Connection.Shutdown(SocketShutdown.Both);
             Connection.BeginDisconnect(true, DisconnectCallback, Connection);
             Connected = false;
-            Log("Disconnected! Resetting Socket.");
+            Log("Desconectado! Reiniciando Socket.");
             InitializeSocket();
         }
 
@@ -73,7 +73,7 @@ namespace SysBot.Base
 
             // Signal that the connection is complete.
             connectionDone.Set();
-            LogUtil.LogInfo("Connected.", Name);
+            LogUtil.LogInfo("Conectado.", Name);
         }
 
         private readonly AutoResetEvent disconnectDone = new(false);
@@ -86,7 +86,7 @@ namespace SysBot.Base
 
             // Signal that the disconnect is complete.
             disconnectDone.Set();
-            LogUtil.LogInfo("Disconnected.", Name);
+            LogUtil.LogInfo("Desconectado.", Name);
         }
 
         private int Read(byte[] buffer)

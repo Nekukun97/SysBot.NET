@@ -16,10 +16,10 @@ namespace SysBot.Base
 
         public override void Connect()
         {
-            Log("Connecting to device...");
+            Log("Conectando Switch...");
             Connection.Connect(Info.IP, Info.Port);
             Connected = true;
-            Log("Connected!");
+            Log("Conectado!");
         }
 
         public override void Reset()
@@ -30,10 +30,10 @@ namespace SysBot.Base
 
         public override void Disconnect()
         {
-            Log("Disconnecting from device...");
+            Log("Desconectando Switch...");
             Connection.Disconnect(false);
             Connected = false;
-            Log("Disconnected!");
+            Log("Desconectado!");
         }
 
         private int Read(byte[] buffer) => Connection.Receive(buffer);

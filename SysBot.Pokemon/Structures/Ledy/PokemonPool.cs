@@ -80,13 +80,13 @@ namespace SysBot.Pokemon
 
                 if (dest.Species == 0)
                 {
-                    LogUtil.LogInfo("SKIPPED: Provided file is not valid: " + dest.FileName, nameof(PokemonPool<T>));
+                    LogUtil.LogInfo("SALTADO: El archivo ofrecido es invalido: " + dest.FileName, nameof(PokemonPool<T>));
                     continue;
                 }
 
                 if (!dest.CanBeTraded())
                 {
-                    LogUtil.LogInfo("SKIPPED: Provided file cannot be traded: " + dest.FileName, nameof(PokemonPool<T>));
+                    LogUtil.LogInfo("SALTADO: El archivo ofrecido no se puede intercambiar: " + dest.FileName, nameof(PokemonPool<T>));
                     continue;
                 }
 
@@ -94,7 +94,7 @@ namespace SysBot.Pokemon
                 if (!la.Valid)
                 {
                     var reason = la.Report();
-                    LogUtil.LogInfo($"SKIPPED: Provided file is not legal: {dest.FileName} -- {reason}", nameof(PokemonPool<T>));
+                    LogUtil.LogInfo($"SALTADO: El archivo ofrecido no es legal: {dest.FileName} -- {reason}", nameof(PokemonPool<T>));
                     continue;
                 }
 
