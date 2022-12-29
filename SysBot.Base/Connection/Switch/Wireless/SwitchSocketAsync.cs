@@ -28,8 +28,17 @@ namespace SysBot.Base
                 return;
             }
 
-            Log("Conectando Switch...");
-            Connection.Connect(Info.IP, Info.Port);
+            Log("Connecting to device...");
+            try
+            {
+                Connection.Connect(Info.IP, Info.Port);
+            }
+            catch (Exception e)
+            {
+                Log($"Connect failed: {e.Message}");
+                Connected = false;
+                return;
+            }
             Connected = true;
             Log("Conectado!");
             Label = Name;
@@ -47,7 +56,16 @@ namespace SysBot.Base
             foreach (IPAddress adr in address)
             {
                 IPEndPoint ep = new(adr, Info.Port);
-                Connection.BeginConnect(ep, ConnectCallback, Connection);
+                try
+                {
+                    Connection.BeginConnect(ep, ConnectCallback, Connection);
+                }
+                catch (Exception e)
+                {
+                    Log($"Reset connection failed: {e.Message}");
+                    Connected = false;
+                    return;
+                }
                 Connected = true;
                 Log("Conectado!");
             }
@@ -55,9 +73,18 @@ namespace SysBot.Base
 
         public override void Disconnect()
         {
-            Log("Desconectando Switch...");
-            Connection.Shutdown(SocketShutdown.Both);
-            Connection.BeginDisconnect(true, DisconnectCallback, Connection);
+            Log("Disconnecting from device...");
+            try
+            {
+                Connection.Shutdown(SocketShutdown.Both);
+                Connection.BeginDisconnect(true, DisconnectCallback, Connection);
+            }
+            catch (Exception e)
+            {
+                Log($"Disconnect failed: {e.Message}");
+                Connected = false;
+                return;
+            }
             Connected = false;
             Log("Desconectado! Reiniciando Socket.");
             InitializeSocket();
@@ -69,7 +96,16 @@ namespace SysBot.Base
         {
             // Complete the connection request.
             Socket client = (Socket)ar.AsyncState;
-            client.EndConnect(ar);
+            try
+            {
+                client.EndConnect(ar);
+            }
+            catch (Exception e)
+            {
+                Log($"ConnectCallback failed: {e.Message}");
+                Connected = false;
+                return;
+            }
 
             // Signal that the connection is complete.
             connectionDone.Set();

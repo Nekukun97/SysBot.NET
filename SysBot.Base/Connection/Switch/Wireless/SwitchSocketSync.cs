@@ -16,8 +16,17 @@ namespace SysBot.Base
 
         public override void Connect()
         {
-            Log("Conectando Switch...");
-            Connection.Connect(Info.IP, Info.Port);
+            Log("Connecting to device...");
+            try
+            {
+                Connection.Connect(Info.IP, Info.Port);
+            }
+            catch (Exception e)
+            {
+                Log($"Connect failed: {e.Message}");
+                Connected = false;
+                return;
+            }
             Connected = true;
             Log("Conectado!");
         }
@@ -30,8 +39,17 @@ namespace SysBot.Base
 
         public override void Disconnect()
         {
-            Log("Desconectando Switch...");
-            Connection.Disconnect(false);
+            Log("Disconnecting from device...");
+            try
+            {
+                Connection.Disconnect(false);
+            }
+            catch (Exception e)
+            {
+                Log($"Disconnect failed: {e.Message}");
+                Connected = false;
+                return;
+            }
             Connected = false;
             Log("Desconectado!");
         }
