@@ -46,6 +46,7 @@ namespace SysBot.Pokemon
             TradeSettings = hub.Config.Trade;
             AbuseSettings = hub.Config.TradeAbuse;
             DumpSetting = hub.Config.Folder;
+            lastOffered = new byte[8];
         }
 
         // Cached offsets that stay the same per session.
@@ -65,6 +66,9 @@ namespace SysBot.Pokemon
         private bool StartFromOverworld = true;
         // Stores whether the last trade was Distribution with fixed code, in which case we don't need to re-enter the code.
         private bool LastTradeDistributionFixed;
+
+        // Track the last Pokémon we were offered since it persists between trades.
+        private byte[] lastOffered;
 
         public override async Task MainLoop(CancellationToken token)
         {
@@ -230,7 +234,18 @@ namespace SysBot.Pokemon
                 await RecoverToOverworld(token).ConfigureAwait(false);
 
             // Handles getting into the portal. Will retry this until successful.
-            if (StartFromOverworld && !await ConnectAndEnterPortal(Hub.Config, token).ConfigureAwait(false))
+            // if we're not starting from overworld, then ensure we're online before opening link trade -- will break the bot otherwise.
+            // If we're starting from overworld, then ensure we're online before opening the portal.
+            if (!StartFromOverworld && !await IsConnectedOnline(ConnectedOffset, token).ConfigureAwait(false))
+            {
+                await RecoverToOverworld(token).ConfigureAwait(false);
+                if (!await ConnectAndEnterPortal(Hub.Config, token).ConfigureAwait(false))
+                {
+                    await RecoverToOverworld(token).ConfigureAwait(false);
+                    return PokeTradeResult.RecoverStart;
+                }
+            }
+            else if (StartFromOverworld && !await ConnectAndEnterPortal(Hub.Config, token).ConfigureAwait(false))
             {
                 await RecoverToOverworld(token).ConfigureAwait(false);
                 return PokeTradeResult.RecoverStart;
@@ -315,7 +330,7 @@ namespace SysBot.Pokemon
                     return PokeTradeResult.RecoverOpenBox;
                 }
             }
-            await Task.Delay(2_000, token).ConfigureAwait(false);
+            await Task.Delay(3_000 + Hub.Config.Timings.ExtraTimeOpenBox, token).ConfigureAwait(false);
 
             var tradePartner = await GetTradePartnerInfo(token).ConfigureAwait(false);
             var trainerNID = await GetTradePartnerNID(TradePartnerNIDOffset, token).ConfigureAwait(false);
@@ -341,7 +356,7 @@ namespace SysBot.Pokemon
 
             // Wait for user input...
             var offered = await ReadUntilPresent(TradePartnerOfferedOffset, 25_000, 1_000, BoxFormatSlotSize, token).ConfigureAwait(false);
-            var oldEC = await SwitchConnection.ReadBytesAbsoluteAsync(TradePartnerOfferedOffset, 4, token).ConfigureAwait(false);
+            var oldEC = await SwitchConnection.ReadBytesAbsoluteAsync(TradePartnerOfferedOffset, 8, token).ConfigureAwait(false);
             if (offered == null || offered.Species < 1 || !offered.ChecksumValid)
             {
                 Log("Trade ended because a valid Pokémon was not offered.");
@@ -390,6 +405,9 @@ namespace SysBot.Pokemon
 
             // Only log if we completed the trade.
             UpdateCountsAndExport(poke, received, toSend);
+
+            // Sometimes they offered another mon, so store that immediately upon leaving Union Room.
+            lastOffered = await SwitchConnection.ReadBytesAbsoluteAsync(TradePartnerOfferedOffset, 8, token).ConfigureAwait(false);
 
             await ExitTradeToPortal(false, token).ConfigureAwait(false);
             return PokeTradeResult.Success;
