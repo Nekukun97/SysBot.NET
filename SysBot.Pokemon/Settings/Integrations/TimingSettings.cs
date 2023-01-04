@@ -12,10 +12,10 @@ namespace SysBot.Pokemon
 
         // Opening the game.
         [Category(OpenGame), Description("Extra time in milliseconds to wait for profiles to load when starting the game.")]
-        public int ExtraTimeLoadProfile { get; set; }
+        public int ExtraTimeLoadProfile { get; set; } = 0;
 
         [Category(OpenGame), Description("Extra time in milliseconds to wait to check if DLC is usable.")]
-        public int ExtraTimeCheckDLC { get; set; }
+        public int ExtraTimeCheckDLC { get; set; } = 0;
 
         [Category(OpenGame), Description("Extra time in milliseconds to wait before clicking A in title screen.")]
         public int ExtraTimeLoadGame { get; set; } = 5000;
@@ -25,36 +25,30 @@ namespace SysBot.Pokemon
 
         // Closing the game.
         [Category(CloseGame), Description("Extra time in milliseconds to wait after pressing HOME to minimize the game.")]
-        public int ExtraTimeReturnHome { get; set; }
+        public int ExtraTimeReturnHome { get; set; } = 0;
 
         [Category(CloseGame), Description("Extra time in milliseconds to wait after clicking to close the game.")]
-        public int ExtraTimeCloseGame { get; set; }
+        public int ExtraTimeCloseGame { get; set; } = 0;
 
         // Raid-specific timings.
         [Category(Raid), Description("[RaidBot] Extra time in milliseconds to wait for the raid to load after clicking on the den.")]
-        public int ExtraTimeLoadRaid { get; set; }
+        public int ExtraTimeLoadRaid { get; set; } = 0;
 
         [Category(Raid), Description("[RaidBot] Extra time in milliseconds to wait after clicking \"Invite Others\" before locking into a Pokémon.")]
-        public int ExtraTimeOpenRaid { get; set; }
+        public int ExtraTimeOpenRaid { get; set; } = 0;
 
         [Category(Raid), Description("[RaidBot] Extra time in milliseconds to wait before closing the game to reset the raid.")]
-        public int ExtraTimeEndRaid { get; set; }
+        public int ExtraTimeEndRaid { get; set; } = 0;
 
         [Category(Raid), Description("[RaidBot] Extra time in milliseconds to wait after accepting a friend.")]
-        public int ExtraTimeAddFriend { get; set; }
+        public int ExtraTimeAddFriend { get; set; } = 0;
 
         [Category(Raid), Description("[RaidBot] Extra time in milliseconds to wait after deleting a friend.")]
-        public int ExtraTimeDeleteFriend { get; set; }
+        public int ExtraTimeDeleteFriend { get; set; } = 0;
 
         // Miscellaneous settings.
         [Category(Misc), Description("[SWSH/SV] Extra time in milliseconds to wait after clicking + to connect to Y-Comm (SWSH) or L to connect online (SV).")]
-        public int ExtraTimeConnectOnline { get; set; }
-
-        [Category(Misc), Description("Number of times to attempt reconnecting to a socket connection after a connection is lost. Set this to -1 to try indefinitely.")]
-        public int ReconnectAttempts { get; set; } = 30;
-
-        [Category(Misc), Description("Extra time in milliseconds to wait between attempts to reconnect. Base time is 30 seconds.")]
-        public int ExtraReconnectDelay { get; set; }
+        public int ExtraTimeConnectOnline { get; set; } = 0;
 
         [Category(Misc), Description("[BDSP] Extra time in milliseconds to wait for the overworld to load after leaving the Union Room.")]
         public int ExtraTimeLeaveUnionRoom { get; set; } = 1000;
@@ -78,6 +72,6 @@ namespace SysBot.Pokemon
         public int KeypressTime { get; set; } = 200;
 
         [Category(Misc), Description("Enable this to decline incoming system updates.")]
-        public bool AvoidSystemUpdate { get; set; }
+        public bool AvoidSystemUpdate { get; set; } = false;
     }
 }

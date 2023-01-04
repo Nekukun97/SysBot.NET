@@ -66,6 +66,7 @@ namespace SysBot.Pokemon
             catch (Exception e)
             {
                 Log(e.Message);
+                Connection.LogError(e.StackTrace);
             }
 
             Log($"Ending {nameof(PokeTradeBot)} loop.");
@@ -95,12 +96,8 @@ namespace SysBot.Pokemon
                 }
                 catch (SocketException e)
                 {
-                    Connection.LogError(e.StackTrace);
-                    var attempts = Hub.Config.Timings.ReconnectAttempts;
-                    var delay = Hub.Config.Timings.ExtraReconnectDelay;
-                    var protocol = Config.Connection.Protocol;
-                    if (!await TryReconnect(attempts, delay, protocol, token).ConfigureAwait(false))
-                        return;
+                    Log(e.Message);
+                    Connection.Reset();
                 }
             }
         }

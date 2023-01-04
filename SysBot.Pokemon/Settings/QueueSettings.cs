@@ -32,7 +32,7 @@ namespace SysBot.Pokemon
         // Queue Toggle
 
         [Category(QueueToggle), Description("Threshold Mode: Count of users that will cause the queue to open.")]
-        public int ThresholdUnlock { get; set; }
+        public int ThresholdUnlock { get; set; } = 0;
 
         [Category(QueueToggle), Description("Threshold Mode: Count of users that will cause the queue to close.")]
         public int ThresholdLock { get; set; } = 30;
