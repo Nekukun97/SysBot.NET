@@ -19,7 +19,7 @@ namespace SysBot.Base
             Log("Connecting to device...");
             Connection.Connect(Info.IP, Info.Port);
             Connected = true;
-            Log("Conectado!");
+            
         }
 
         public override void Reset()
@@ -33,7 +33,7 @@ namespace SysBot.Base
             Log("Disconnecting from device...");
             Connection.Disconnect(false);
             Connected = false;
-            Log("Desconectado!");
+            
         }
 
         private int Read(byte[] buffer) => Connection.Receive(buffer);
