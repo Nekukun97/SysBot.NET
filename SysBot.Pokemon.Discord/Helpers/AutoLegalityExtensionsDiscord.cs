@@ -13,7 +13,7 @@ namespace SysBot.Pokemon.Discord
         {
             if (set.Species <= 0)
             {
-                await channel.SendMessageAsync("Vaya! No fui capaz de interpretar tu mensaje! Si intentas convertir algo, por favor revise dos veces lo que esta pegando!").ConfigureAwait(false);
+                await channel.SendMessageAsync("Oops! I wasn't able to interpret your message! If you intended to convert something, please double check what you're pasting!").ConfigureAwait(false);
                 return;
             }
 
@@ -33,13 +33,13 @@ namespace SysBot.Pokemon.Discord
                     return;
                 }
 
-                var msg = $"Aqui esta tu PKM ({result}) legalizado {spec} ({la.EncounterOriginal.Name})!";
+                var msg = $"Here's your ({result}) legalized PKM for {spec} ({la.EncounterOriginal.Name})!";
                 await channel.SendPKMAsync(pkm, msg + $"\n{ReusableActions.GetFormattedShowdownText(pkm)}").ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 LogUtil.LogSafe(ex, nameof(AutoLegalityExtensionsDiscord));
-                var msg = $"Vaya! Ocurrio un error inesperado con este Showdown Set:\n```{string.Join("\n", set.GetSetLines())}```";
+                var msg = $"Oops! An unexpected problem happened with this Showdown Set:\n```{string.Join("\n", set.GetSetLines())}```";
                 await channel.SendMessageAsync(msg).ConfigureAwait(false);
             }
         }
@@ -72,20 +72,20 @@ namespace SysBot.Pokemon.Discord
             var pkm = download.Data!;
             if (new LegalityAnalysis(pkm).Valid)
             {
-                await channel.SendMessageAsync($"{download.SanitizedFileName}: Ahora es legal.").ConfigureAwait(false);
+                await channel.SendMessageAsync($"{download.SanitizedFileName}: Already legal.").ConfigureAwait(false);
                 return;
             }
 
             var legal = pkm.LegalizePokemon();
             if (!new LegalityAnalysis(legal).Valid)
             {
-                await channel.SendMessageAsync($"{download.SanitizedFileName}: No se puede legalizar.").ConfigureAwait(false);
+                await channel.SendMessageAsync($"{download.SanitizedFileName}: Unable to legalize.").ConfigureAwait(false);
                 return;
             }
 
             legal.RefreshChecksum();
 
-            var msg = $"Aqui esta tu Pokemon legal {download.SanitizedFileName}!\n{ReusableActions.GetFormattedShowdownText(legal)}";
+            var msg = $"Here's your legalized PKM for {download.SanitizedFileName}!\n{ReusableActions.GetFormattedShowdownText(legal)}";
             await channel.SendPKMAsync(legal, msg).ConfigureAwait(false);
         }
     }

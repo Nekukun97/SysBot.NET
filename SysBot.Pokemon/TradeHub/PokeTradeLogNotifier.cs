@@ -9,23 +9,23 @@ namespace SysBot.Pokemon
     {
         public void TradeInitialize(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info)
         {
-            LogUtil.LogInfo($"Iniciando intercambio en conexion para {info.Trainer.TrainerName}, enviando {GameInfo.GetStrings(1).Species[info.TradeData.Species]}", routine.Connection.Label);
+            LogUtil.LogInfo($"Starting trade loop for {info.Trainer.TrainerName}, sending {GameInfo.GetStrings(1).Species[info.TradeData.Species]}", routine.Connection.Label);
         }
 
         public void TradeSearching(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info)
         {
-            LogUtil.LogInfo($"Buscando para el intercambio con {info.Trainer.TrainerName}, enviando {GameInfo.GetStrings(1).Species[info.TradeData.Species]}", routine.Connection.Label);
+            LogUtil.LogInfo($"Searching for trade with {info.Trainer.TrainerName}, sending {GameInfo.GetStrings(1).Species[info.TradeData.Species]}", routine.Connection.Label);
         }
 
         public void TradeCanceled(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, PokeTradeResult msg)
         {
-            LogUtil.LogInfo($"Cancelando intercambio con {info.Trainer.TrainerName}, debido a {msg}.", routine.Connection.Label);
+            LogUtil.LogInfo($"Canceling trade with {info.Trainer.TrainerName}, because {msg}.", routine.Connection.Label);
             OnFinish?.Invoke(routine);
         }
 
         public void TradeFinished(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, T result)
         {
-            LogUtil.LogInfo($"Intercambio finalizado {info.Trainer.TrainerName} {GameInfo.GetStrings(1).Species[info.TradeData.Species]} for {GameInfo.GetStrings(1).Species[result.Species]}", routine.Connection.Label);
+            LogUtil.LogInfo($"Finished trading {info.Trainer.TrainerName} {GameInfo.GetStrings(1).Species[info.TradeData.Species]} for {GameInfo.GetStrings(1).Species[result.Species]}", routine.Connection.Label);
             OnFinish?.Invoke(routine);
         }
 
@@ -44,7 +44,7 @@ namespace SysBot.Pokemon
 
         public void SendNotification(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, T result, string message)
         {
-            LogUtil.LogInfo($"Notificando {info.Trainer.TrainerName} sobre su {GameInfo.GetStrings(1).Species[result.Species]}", routine.Connection.Label);
+            LogUtil.LogInfo($"Notifying {info.Trainer.TrainerName} about their {GameInfo.GetStrings(1).Species[result.Species]}", routine.Connection.Label);
             LogUtil.LogInfo(message, routine.Connection.Label);
         }
 

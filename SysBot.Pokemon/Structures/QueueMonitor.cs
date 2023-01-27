@@ -31,8 +31,8 @@ namespace SysBot.Pokemon
                 // Queue setting has been updated. Echo out that things have changed.
                 secWaited = 0;
                 var state = queues.GetCanQueue()
-                    ? "@trade **ESTA ABIERTO PARA NUEVAS SOLICITUDES.**"
-                    : "@trade **CERRADO PARA NUEVAS SOLICITUDES, ESPERA UNOS MINUTOS.**";
+                    ? "Users are now able to join the trade queue."
+                    : "Changed queue settings: **Users CANNOT join the queue until it is turned back on.**";
                 EchoUtil.Echo(state);
             }
         }

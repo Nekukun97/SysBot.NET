@@ -61,14 +61,14 @@ namespace SysBot.Base
             var ae = finishedTask.Exception;
             if (ae == null)
             {
-                LogUtil.LogError("El Bot se detuvo sin error.", ident);
+                LogUtil.LogError("Bot has stopped without error.", ident);
                 return;
             }
 
-            LogUtil.LogError("El Bot ha fallado!", ident);
+            LogUtil.LogError("Bot has crashed!", ident);
 
             if (!string.IsNullOrEmpty(ae.Message))
-                LogUtil.LogError("Mensaje agregado: " + ae.Message, ident);
+                LogUtil.LogError("Aggregate message: " + ae.Message, ident);
 
             var st = ae.StackTrace;
             if (!string.IsNullOrEmpty(st))

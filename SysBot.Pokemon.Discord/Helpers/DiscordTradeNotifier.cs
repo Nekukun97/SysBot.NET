@@ -26,30 +26,30 @@ namespace SysBot.Pokemon.Discord
         public void TradeInitialize(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info)
         {
             var receive = Data.Species == 0 ? string.Empty : $" ({Data.Nickname})";
-            Trader.SendMessageAsync($"Iniciando intercambio{receive}. Por favor este atento/a. Tu codigo es: **{Code:0000 0000}**.").ConfigureAwait(false);
+            Trader.SendMessageAsync($"Initializing trade{receive}. Please be ready. Your code is **{Code:0000 0000}**.").ConfigureAwait(false);
         }
 
         public void TradeSearching(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info)
         {
             var name = Info.TrainerName;
-            var trainer = string.IsNullOrEmpty(name) ? string.Empty : $", @{name}";
-            Trader.SendMessageAsync($"Te estoy esperando {trainer}! Tu codigo es: **{Code:0000 0000}**. Mi Nick es: **{routine.InGameName}**.").ConfigureAwait(false);
+            var trainer = string.IsNullOrEmpty(name) ? string.Empty : $", {name}";
+            Trader.SendMessageAsync($"I'm waiting for you{trainer}! Your code is **{Code:0000 0000}**. My IGN is **{routine.InGameName}**.").ConfigureAwait(false);
         }
 
         public void TradeCanceled(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, PokeTradeResult msg)
         {
             OnFinish?.Invoke(routine);
-            Trader.SendMessageAsync($"Intercambio cancelado: {msg}").ConfigureAwait(false);
+            Trader.SendMessageAsync($"Trade canceled: {msg}").ConfigureAwait(false);
         }
 
         public void TradeFinished(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, T result)
         {
             OnFinish?.Invoke(routine);
             var tradedToUser = Data.Species;
-            var message = tradedToUser != 0 ? $"Intercambio finalizado. Disfruta tu {(Species)tradedToUser}!\nRecuerda apoyarme: https://www.buymeacoffee.com/nekukun97" : "Trade finalizado!";
+            var message = tradedToUser != 0 ? $"Trade finished. Enjoy your {(Species)tradedToUser}!" : "Trade finished!";
             Trader.SendMessageAsync(message).ConfigureAwait(false);
             if (result.Species != 0 && Hub.Config.Discord.ReturnPKMs)
-                Trader.SendPKMAsync(result, "Este es el PKM que me intercambiaste!").ConfigureAwait(false);
+                Trader.SendPKMAsync(result, "Here's what you traded me!").ConfigureAwait(false);
         }
 
         public void SendNotification(PokeRoutineExecutor<T> routine, PokeTradeDetail<T> info, string message)
@@ -88,7 +88,7 @@ namespace SysBot.Pokemon.Discord
                 x.Value = lines;
                 x.IsInline = false;
             });
-            var msg = $"Aqui estan los detalles para: `{r.Seed:X16}`:";
+            var msg = $"Here are the details for `{r.Seed:X16}`:";
             Trader.SendMessageAsync(msg, embed: embed.Build()).ConfigureAwait(false);
         }
     }

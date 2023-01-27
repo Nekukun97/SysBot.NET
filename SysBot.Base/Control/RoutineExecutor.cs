@@ -18,7 +18,7 @@ namespace SysBot.Base
             Connection = cfg.CreateAsynchronous();
         }
 
-        public string LastLogged { get; private set; } = "No iniciado";
+        public string LastLogged { get; private set; } = "Not Started";
         public DateTime LastTime { get; private set; } = DateTime.Now;
 
         public void ReportStatus() => LastTime = DateTime.Now;
@@ -39,7 +39,7 @@ namespace SysBot.Base
         public async Task RunAsync(CancellationToken token)
         {
             Connection.Connect();
-            Log("Iniciando conexion con la consola...");
+            Log("Initializing connection with console...");
             await InitialStartup(token).ConfigureAwait(false);
             await MainLoop(token).ConfigureAwait(false);
             Connection.Disconnect();

@@ -15,13 +15,13 @@ namespace SysBot.Pokemon.Discord
         {
             if ((uint)code > MaxTradeCode)
             {
-                await context.Channel.SendMessageAsync("El codigo del intercambio debe ser 00000000-99999999!").ConfigureAwait(false);
+                await context.Channel.SendMessageAsync("Trade code should be 00000000-99999999!").ConfigureAwait(false);
                 return;
             }
 
             try
             {
-                const string helper = "Te he agregado a la lista! Te enviare un mensaje por aqui cuando tu intercambio empiece.";
+                const string helper = "I've added you to the queue! I'll message you here when your trade is starting.";
                 IUserMessage test = await trader.SendMessageAsync(helper).ConfigureAwait(false);
 
                 // Try adding
@@ -30,7 +30,7 @@ namespace SysBot.Pokemon.Discord
                 // Notify in channel
                 await context.Channel.SendMessageAsync(msg).ConfigureAwait(false);
                 // Notify in PM to mirror what is said in the channel.
-                await trader.SendMessageAsync($"{msg}\nTu codigo del intercambio es **{code:0000 0000}**.").ConfigureAwait(false);
+                await trader.SendMessageAsync($"{msg}\nYour trade code will be **{code:0000 0000}**.").ConfigureAwait(false);
 
                 // Clean Up
                 if (result)
@@ -73,7 +73,7 @@ namespace SysBot.Pokemon.Discord
 
             if (added == QueueResultAdd.AlreadyInQueue)
             {
-                msg = "Lo siento, ya estas en la lista.";
+                msg = "Sorry, you are already in the queue.";
                 return false;
             }
 
@@ -81,18 +81,18 @@ namespace SysBot.Pokemon.Discord
 
             var ticketID = "";
             if (TradeStartModule<T>.IsStartChannel(context.Channel.Id))
-                ticketID = $", ID unico: {detail.ID}";
+                ticketID = $", unique ID: {detail.ID}";
 
             var pokeName = "";
             if (t == PokeTradeType.Specific && pk.Species != 0)
-                pokeName = $" Recibiendo: {(Species)pk.Species}.";
-            msg = $"{user.Mention} - Agregado a la lista {type} {ticketID}. Posicion actual: {position.Position}.{pokeName}";
+                pokeName = $" Receiving: {(Species)pk.Species}.";
+            msg = $"{user.Mention} - Added to the {type} queue{ticketID}. Current Position: {position.Position}.{pokeName}";
 
             var botct = Info.Hub.Bots.Count;
             if (position.Position > botct)
             {
                 var eta = Info.Hub.Config.Queues.EstimateDelay(position.Position, botct);
-                msg += $" Tiempo Estimado: {eta:F1} minutos.";
+                msg += $" Estimated: {eta:F1} minutes.";
             }
             return true;
         }

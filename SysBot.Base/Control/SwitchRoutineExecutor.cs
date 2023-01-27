@@ -15,7 +15,7 @@ namespace SysBot.Base
         {
             UseCRLF = cfg.GetInnerConfig() is ISwitchConnectionConfig {UseCRLF: true};
             if (Connection is not ISwitchConnectionAsync connect)
-                throw new System.Exception("No hay switch valida para la conexion");
+                throw new System.Exception("Not a valid switch connection");
             SwitchConnection = connect;
         }
 

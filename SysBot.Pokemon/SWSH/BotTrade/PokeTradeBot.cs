@@ -66,7 +66,6 @@ namespace SysBot.Pokemon
             catch (Exception e)
             {
                 Log(e.Message);
-                Connection.LogError(e.StackTrace);
             }
 
             Log($"Ending {nameof(PokeTradeBot)} loop.");

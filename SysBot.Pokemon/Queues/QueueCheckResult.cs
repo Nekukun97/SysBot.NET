@@ -26,12 +26,12 @@ namespace SysBot.Pokemon
         public string GetMessage()
         {
             if (!InQueue || Detail is null)
-                return "No te encuentras en la lista.";
+                return "You are not in the queue.";
             var position = $"{Position}/{QueueCount}";
-            var msg = $"Estas en la lista {Detail.Type}! Posicion: {position} (ID {Detail.Trade.ID})";
+            var msg = $"You are in the {Detail.Type} queue! Position: {position} (ID {Detail.Trade.ID})";
             var pk = Detail.Trade.TradeData;
             if (pk.Species != 0)
-                msg += $", Recibiendo: {(Species)Detail.Trade.TradeData.Species}";
+                msg += $", Receiving: {(Species)Detail.Trade.TradeData.Species}";
             return msg;
         }
     }

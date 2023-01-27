@@ -16,7 +16,7 @@ namespace SysBot.Base
     /// <remarks>
     /// Interactions are performed asynchronously.
     /// </remarks>
-    public sealed class SwitchSocketAsync : SwitchSocket, ISwitchConnectionAsync, IAsyncConnection
+    public sealed class SwitchSocketAsync : SwitchSocket, ISwitchConnectionAsync
     {
         public SwitchSocketAsync(IWirelessConnectionConfig cfg) : base(cfg) { }
 
@@ -30,8 +30,7 @@ namespace SysBot.Base
 
             Log("Connecting to device...");
             Connection.Connect(Info.IP, Info.Port);
-            Connected = true;
-            Log("Conectado!");
+            Log("Connected!");
             Label = Name;
         }
 
@@ -41,15 +40,23 @@ namespace SysBot.Base
             if (Connected)
                 Disconnect();
 
+            // Socket will update "Connected" condition itself based on the success of the most recent read/write call.
+            // We want to ensure we initialize the Socket if we're resetting after a crash.
             InitializeSocket();
-            Log("Conectando Switch...");
+            Log("Connecting to device...");
             var address = Dns.GetHostAddresses(ip);
             foreach (IPAddress adr in address)
             {
                 IPEndPoint ep = new(adr, Info.Port);
-                Connection.BeginConnect(ep, ConnectCallback, Connection);
-                Connected = true;
-                Log("Conectado!");
+                try
+                {
+                    Connection.Connect(ep);
+                }
+                catch
+                {
+                    return;
+                }
+                Log("Connected!");
             }
         }
 
@@ -57,36 +64,17 @@ namespace SysBot.Base
         {
             Log("Disconnecting from device...");
             Connection.Shutdown(SocketShutdown.Both);
-            Connection.BeginDisconnect(true, DisconnectCallback, Connection);
-            Connected = false;
-            Log("Desconectado! Reiniciando Socket.");
+            try
+            {
+                Connection.Disconnect(false);
+            }
+            catch
+            {
+                return;
+            }
+
+            Log("Disconnected! Resetting Socket.");
             InitializeSocket();
-        }
-
-        private readonly AutoResetEvent connectionDone = new(false);
-
-        public void ConnectCallback(IAsyncResult ar)
-        {
-            // Complete the connection request.
-            Socket client = (Socket)ar.AsyncState;
-            client.EndConnect(ar);
-
-            // Signal that the connection is complete.
-            connectionDone.Set();
-            LogUtil.LogInfo("Conectado.", Name);
-        }
-
-        private readonly AutoResetEvent disconnectDone = new(false);
-
-        public void DisconnectCallback(IAsyncResult ar)
-        {
-            // Complete the disconnect request.
-            Socket client = (Socket)ar.AsyncState;
-            client.EndDisconnect(ar);
-
-            // Signal that the disconnect is complete.
-            disconnectDone.Set();
-            LogUtil.LogInfo("Desconectado.", Name);
         }
 
         private int Read(byte[] buffer)
