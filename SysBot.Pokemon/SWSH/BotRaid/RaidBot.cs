@@ -43,9 +43,7 @@ namespace SysBot.Pokemon
                 Log("Starting main RaidBot loop.");
                 await InnerLoop(token).ConfigureAwait(false);
             }
-#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
-#pragma warning restore CA1031 // Do not catch general exception types
             {
                 Log(e.Message);
             }
@@ -105,7 +103,7 @@ namespace SysBot.Pokemon
 
         public override async Task HardStop()
         {
-            await CleanExit(Settings, CancellationToken.None).ConfigureAwait(false);
+            await CleanExit(CancellationToken.None).ConfigureAwait(false);
         }
 
         private async Task HostRaidAsync(int code, CancellationToken token)

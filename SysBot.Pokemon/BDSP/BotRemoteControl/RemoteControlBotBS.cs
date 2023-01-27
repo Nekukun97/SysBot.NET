@@ -5,9 +5,9 @@ using SysBot.Base;
 
 namespace SysBot.Pokemon
 {
-    public class RemoteControlBot : PokeRoutineExecutor8
+    public class RemoteControlBotBS : PokeRoutineExecutor8BS
     {
-        public RemoteControlBot(PokeBotState cfg) : base(cfg)
+        public RemoteControlBotBS(PokeBotState cfg) : base(cfg)
         {
         }
 
